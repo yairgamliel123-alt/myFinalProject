@@ -1,11 +1,8 @@
 <div *ngIf="loading">Loading...</div>
 
-<div *ngFor="let trip of trips">
-  <h3>{{ trip.title }}</h3>
-  <p>{{ trip.description }}</p>
-  <img [src]="trip.image" width="200" />
-
-  <p *ngIf="trip.location_name">
-    📍 {{ trip.location_name }}
-  </p>
+<div class="img" *ngIf="!loading">
+  <img
+    *ngFor="let trip of trips"
+    [src]="trip.image"
+  />
 </div>
