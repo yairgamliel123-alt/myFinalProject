@@ -1,11 +1,31 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {TripsService} from '../services/trips';
+import { Trip } from '../Trip.models';
 @Component({
+  standalone: true, 
   selector: 'app-trips',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './trips.html',
   styleUrl: './trips.css',
 })
-export class Trips {
+export class Trips implements OnInit {
+  trips: Trip[] = [];
+  loading = true;
 
+  constructor(private tripService: TripsService) {}
+
+  ngOnInit() {
+    this.tripService.getTrips().subscribe({
+      next: (data: Trip[]) => {
+        this.trips = data;
+        this.loading = false;
+        
+        
+      },
+      error: () => {
+        this.loading = false;
+      },
+    });
+  }
 }

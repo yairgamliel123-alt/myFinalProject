@@ -1,0 +1,270 @@
+.page {
+    padding: 24px;
+    background: #f6f7fb;
+    min-height: calc(100vh - 70px);
+  }
+  
+  .hero {
+    max-width: 1100px;
+    margin: 0 auto 28px;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 18px;
+  }
+  
+  .heroContent {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.18), rgba(37, 99, 235, 0.12));
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 26px;
+  }
+  
+  .pill {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(229, 231, 235, 0.9);
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 10px;
+  }
+  
+  .heroContent h1 {
+    margin: 0;
+    font-size: 40px;
+    line-height: 1.1;
+    color: #111827;
+  }
+  
+  .heroContent p {
+    margin: 12px 0 18px;
+    color: #374151;
+    font-size: 16px;
+    max-width: 60ch;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition: 0.2s ease;
+    cursor: pointer;
+  }
+  
+  .btn.primary {
+    background: #2563eb;
+    color: white;
+  }
+  
+  .btn.primary:hover {
+    filter: brightness(0.95);
+    transform: translateY(-1px);
+  }
+  
+  .btn.ghost {
+    background: rgba(255, 255, 255, 0.8);
+    color: #111827;
+    border-color: #e5e7eb;
+  }
+  
+  .btn.ghost:hover {
+    background: #ffffff;
+    transform: translateY(-1px);
+  }
+  
+  .btn.small {
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    color: #111827;
+  }
+  
+  .btn.small:hover {
+    transform: translateY(-1px);
+  }
+  
+  .stats {
+    display: flex;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  
+  .stat {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 10px 12px;
+    min-width: 110px;
+  }
+  
+  .num {
+    font-size: 18px;
+    font-weight: 800;
+    color: #111827;
+  }
+  
+  .label {
+    font-size: 13px;
+    color: #6b7280;
+  }
+  
+  .heroCard {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 22px;
+  }
+  
+  .heroCard h3 {
+    margin: 0 0 10px;
+    color: #111827;
+  }
+  
+  .heroCard ul {
+    margin: 0;
+    padding-right: 18px;
+    color: #374151;
+    display: grid;
+    gap: 8px;
+  }
+  
+  .cardActions {
+    margin-top: 14px;
+  }
+  
+  .link {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 700;
+  }
+  
+  .link:hover {
+    text-decoration: underline;
+  }
+  
+  .section {
+    max-width: 1100px;
+    margin: 0 auto 28px;
+  }
+  
+  .section h2 {
+    margin: 0 0 14px;
+    color: #111827;
+  }
+  
+  .sectionHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  
+  .grid3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  
+  .tile {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 18px;
+  }
+  
+  .icon {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+  
+  .tile h3 {
+    margin: 0 0 8px;
+    color: #111827;
+  }
+  
+  .tile p {
+    margin: 0;
+    color: #4b5563;
+  }
+  
+  .grid4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  
+  .trip {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: 0.2s ease;
+  }
+  
+  .trip:hover {
+    transform: translateY(-2px);
+  }
+  
+  .tripImg {
+    height: 120px;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(37, 99, 235, 0.18));
+  }
+  
+  .tripBody {
+    padding: 12px;
+  }
+  
+  .tripBody h4 {
+    margin: 0 0 8px;
+    color: #111827;
+  }
+  
+  .badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  
+  .badge {
+    font-size: 12px;
+    color: #111827;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    padding: 4px 8px;
+    border-radius: 999px;
+  }
+  
+  .cta {
+    max-width: 1100px;
+    margin: 0 auto 10px;
+    background: linear-gradient(135deg, #111827, #1f2937);
+    border-radius: 18px;
+    padding: 22px;
+    color: white;
+  }
+  
+  .ctaInner h2 {
+    margin: 0 0 6px;
+  }
+  
+  .ctaInner p {
+    margin: 0 0 14px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  
+ 
+  
