@@ -2,15 +2,18 @@
 .nav {
     display: flex;
     align-items: center;
-    gap: 24px;
-  
     padding: 16px 32px;
     background: #ffffff;
     border-bottom: 1px solid #e5e7eb;
-  
-    position: sticky;
     top: 0;
-    z-index: 100;
+    
+    
+  }
+  .navContext{
+    display: flex; 
+    margin-left:35%;
+    gap: 15%;
+    
   }
   
   /* Links */
@@ -38,9 +41,5 @@
     color: white;
   }
   
-  /* Push auth links to the right */
-  .nav a:nth-last-child(2),
-  .nav a:last-child {
-    margin-left: auto;
-  }
+ 
   
