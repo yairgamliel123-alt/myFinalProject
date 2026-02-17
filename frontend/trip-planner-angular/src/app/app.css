@@ -1,0 +1,46 @@
+/* Navbar container */
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  
+    padding: 16px 32px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+  
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  /* Links */
+  .nav a {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: #374151;
+  
+    padding: 6px 10px;
+    border-radius: 8px;
+  
+    transition: all 0.2s ease;
+  }
+  
+  /* Hover */
+  .nav a:hover {
+    background: #f3f4f6;
+    color: #111827;
+  }
+  
+  /* Active link */
+  .nav a.active {
+    background: #2563eb;
+    color: white;
+  }
+  
+  /* Push auth links to the right */
+  .nav a:nth-last-child(2),
+  .nav a:last-child {
+    margin-left: auto;
+  }
+  
