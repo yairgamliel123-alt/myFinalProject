@@ -1,6 +1,39 @@
- .img {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
+ .cardContiner {
+  
+  display: flex;
+  flex-wrap: wrap;     
+  gap: 20px;
+  justify-content: center;
   }
   
+/* עטיפה – ממקמת באמצע */
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0 32px;
+  border-radius: 20px;
+  margin-left: 40%;
+}
+
+/* שורת החיפוש */
+.inputField {
+  width: min(420px, 90%);
+  padding: 14px 18px;
+  font-size: 16px;
+  border-radius: 999px; /* עיגול מלא */
+  border: 1px solid #e5e7eb;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* פוקוס */
+.inputField:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+/* Placeholder */
+.inputField::placeholder {
+  color: #9ca3af;
+}

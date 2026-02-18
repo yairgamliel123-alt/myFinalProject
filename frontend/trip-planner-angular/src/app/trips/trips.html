@@ -1,8 +1,13 @@
 <div *ngIf="loading">Loading...</div>
+<input class="search-wrapper"
 
-<div class="img" *ngIf="!loading">
+  type="text"
+  placeholder="🔍 חפש טיול לפי שם..."
+  [(ngModel)]="searchText"
+/>
+<div class="cardContiner" *ngIf="!loading">
   <app-trip-card
-  *ngFor="let trip of trips"
+  *ngFor="let trip of filteredTrips"
   [trip]="trip"
 ></app-trip-card>
 </div>

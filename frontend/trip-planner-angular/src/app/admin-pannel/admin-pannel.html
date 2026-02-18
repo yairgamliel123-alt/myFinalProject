@@ -1,0 +1,64 @@
+<p>admin-pannel works!</p>
+<button>addTrips</button>
+<button>removeTrip</button>
+<button>updateTrip</button>
+<div class="admin-page">
+    <h2>הוספת טיול חדש</h2>
+  
+    <form (ngSubmit)="submit()" #f="ngForm" class="form">
+  
+      <!-- title -->
+      <input
+        class="input"
+        name="title"
+        [(ngModel)]="model.title"
+        placeholder="שם הטיול *"
+        required
+      />
+  
+      <!-- image -->
+      <input
+        class="input"
+        name="image"
+        [(ngModel)]="model.image"
+        placeholder="קישור לתמונה (URL) *"
+        required
+      />
+  
+      <!-- description -->
+      <textarea
+        class="input textarea"
+        name="description"
+        [(ngModel)]="model.description"
+        placeholder="תיאור הטיול"
+        rows="4"
+      ></textarea>
+  
+      <!-- location name -->
+      <input
+        class="input"
+        name="location_name"
+        [(ngModel)]="model.location_name"
+        placeholder="שם מיקום"
+      />
+  
+      <!-- youtube id -->
+      <input
+        class="input"
+        name="youtube_id"
+        [(ngModel)]="model.youtube_id"
+        placeholder="YouTube ID (לא קישור מלא)"
+      />
+  
+     
+  
+      <button class="btn" [disabled]="!f.valid || loading">
+        {{ loading ? 'שומר...' : 'הוסף טיול' }}
+      </button>
+  
+      <p class="success" *ngIf="successMsg">{{ successMsg }}</p>
+      <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
+  
+    </form>
+  </div>
+  

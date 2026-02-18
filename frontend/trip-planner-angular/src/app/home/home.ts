@@ -19,7 +19,7 @@ export class Home implements OnInit {
   ngOnInit() {
     this.tripService.getTrips().subscribe({
       next: (data:Trip[]) => {
-        this.trips = data.slice(0, 4); // 👈 רק 4 טיולים
+        this.trips = data.slice(7, 11); // 👈 רק 4 טיולים
         this.loading = false;
       },
       error: () => {
