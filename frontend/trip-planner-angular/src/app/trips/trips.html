@@ -1,8 +1,8 @@
 <div *ngIf="loading">Loading...</div>
 
 <div class="img" *ngIf="!loading">
-  <img
-    *ngFor="let trip of trips"
-    [src]="trip.image"
-  />
+  <app-trip-card
+  *ngFor="let trip of trips"
+  [trip]="trip"
+></app-trip-card>
 </div>

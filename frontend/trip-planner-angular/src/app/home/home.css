@@ -2,14 +2,21 @@
     padding: 24px;
     background: #f6f7fb;
     min-height: calc(100vh - 70px);
+    background-image: url('../../assets/paul-caillot-9NMFtsYKvD8-unsplash.jpg');
+    background-size: cover;        
+    background-position: center;   
+    background-repeat: no-repeat;
   }
   
+
+
   .hero {
     max-width: 1100px;
     margin: 0 auto 28px;
     display: grid;
     grid-template-columns: 1.2fr 0.8fr;
     gap: 18px;
+    
   }
   
   .heroContent {
@@ -18,7 +25,7 @@
     border-radius: 18px;
     padding: 26px;
   }
-  
+
   .pill {
     display: inline-block;
     padding: 6px 10px;
@@ -34,7 +41,7 @@
     margin: 0;
     font-size: 40px;
     line-height: 1.1;
-    color: #111827;
+    color: #f6f7fb;
   }
   
   .heroContent p {
@@ -109,7 +116,11 @@
     padding: 10px 12px;
     min-width: 110px;
   }
-  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
   .num {
     font-size: 18px;
     font-weight: 800;
@@ -178,6 +189,7 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 14px;
   }
+
   
   .tile {
     background: #ffffff;

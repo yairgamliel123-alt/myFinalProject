@@ -2,7 +2,7 @@
     <section class="hero">
       <div class="heroContent">
         <span class="pill">🏞️ TripPlanner</span>
-        <h1>מצא את הטיול הבא שלך בקלות</h1>
+        <h1 id="heroContenth1">מצא את הטיול הבא שלך בקלות</h1>
         <p>
           סנן לפי אזור, רמת קושי ומאפיינים – ותמצא את המסלול שמתאים בדיוק לך.
         </p>
@@ -72,51 +72,12 @@
         <h2>טעימה מהטיולים</h2>
         <a class="btn small" routerLink="/trips">לכל הטיולים</a>
       </div>
-  
-      <div class="grid4">
-        <div class="trip">
-          <div class="tripImg"></div>
-          <div class="tripBody">
-            <h4>נחל לדוגמה</h4>
-            <div class="badges">
-              <span class="badge">אזור: דרום</span>
-              <span class="badge">קושי: בינוני</span>
-            </div>
-          </div>
-        </div>
-  
-        <div class="trip">
-          <div class="tripImg"></div>
-          <div class="tripBody">
-            <h4>הר לדוגמה</h4>
-            <div class="badges">
-              <span class="badge">אזור: צפון</span>
-              <span class="badge">קושי: קשה</span>
-            </div>
-          </div>
-        </div>
-  
-        <div class="trip">
-          <div class="tripImg"></div>
-          <div class="tripBody">
-            <h4>יער לדוגמה</h4>
-            <div class="badges">
-              <span class="badge">אזור: מרכז</span>
-              <span class="badge">קושי: קל</span>
-            </div>
-          </div>
-        </div>
-  
-        <div class="trip">
-          <div class="tripImg"></div>
-          <div class="tripBody">
-            <h4>תצפית לדוגמה</h4>
-            <div class="badges">
-              <span class="badge">אזור: דרום</span>
-              <span class="badge">קושי: קל</span>
-            </div>
-          </div>
-        </div>
+      
+      <div class="grid" >
+        <app-trip-card
+          *ngFor="let trip of trips"
+          [trip]="trip"
+        ></app-trip-card>
       </div>
     </section>
   
@@ -132,4 +93,3 @@
       </div>
     </section>
   </div>
-  
