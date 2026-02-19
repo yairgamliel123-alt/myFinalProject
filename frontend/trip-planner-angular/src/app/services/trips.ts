@@ -15,4 +15,8 @@ export class TripsService {
   addTrip(trip: Partial<Trip>): Observable<Trip> {
     return this.http.post<Trip>(`${this.apiUrl}/add-trip/`, trip);
   }
+  removeTrip(trip_name:string){
+    const encodedName = encodeURIComponent(trip_name);
+    return this.http.delete<Trip>(`${this.apiUrl}/remove-trip/${encodedName}/` );
+  }
 }

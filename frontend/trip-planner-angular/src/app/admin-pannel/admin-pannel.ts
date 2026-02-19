@@ -23,14 +23,22 @@ export class AdminPannel {
   loading = false;
   successMsg = '';
   errorMsg = '';
+  showAddForm = false;
+  showRemoveForm = false;
+  tripName: string = '';
 
   constructor(private tripService: TripsService) {}
-
+  toggleAddTrip() {
+    this.showAddForm = !this.showAddForm;
+  }
+  toggleRemoveFrom() {
+    this.showRemoveForm = !this.showRemoveForm;
+  }
   submit() {
     this.loading = true;
     this.successMsg = '';
     this.errorMsg = '';
-
+    
     console.log('Trip data:', this.model);
 
     this.tripService.addTrip(this.model).subscribe({
@@ -52,6 +60,29 @@ export class AdminPannel {
         this.errorMsg = '❌ שגיאה בהוספת טיול';
         this.loading = false;
       },
+    });
+  }
+
+  remove(){
+    if (!this.tripName) {
+      this.errorMsg = 'יש להזין שם טיול למחיקה';
+      return;
+    }
+
+    this.loading = true;
+    this.errorMsg = '';
+    this.successMsg = '';
+
+    this.tripService.removeTrip(this.tripName).subscribe({
+      next: () => {
+        this.successMsg = 'הטיול נמחק בהצלחה';
+        this.tripName = '';
+        this.loading = false; 
+        console.log('Trip deleted successfully');
+      },
+      error: (err:any) => {
+        console.error(err);
+      }
     });
   }
 }

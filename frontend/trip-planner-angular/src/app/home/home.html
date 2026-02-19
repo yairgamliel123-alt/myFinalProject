@@ -14,7 +14,7 @@
   
         <div class="stats">
           <div class="stat">
-            <div class="num">30+</div>
+            <div class="num">{{allTrips().length }}</div>
             <div class="label">מסלולים</div>
           </div>
           <div class="stat">
@@ -73,9 +73,9 @@
         <a class="btn small" routerLink="/trips">לכל הטיולים</a>
       </div>
       
-      <div class="grid" >
+      <div class="grid" *ngIf="!loading()">
         <app-trip-card
-          *ngFor="let trip of trips"
+          *ngFor="let trip of trips()"
           [trip]="trip"
         ></app-trip-card>
       </div>
