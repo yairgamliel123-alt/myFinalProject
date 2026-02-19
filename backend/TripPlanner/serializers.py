@@ -3,7 +3,7 @@ from .models import Trip
 from django.core.validators import URLValidator
 from .extract_youtube_url import extract_youtube_id
 from django.core.exceptions import ValidationError as DjangoValidationError
-from .service import geocoding
+from .service.geocoding import geocode
 
 
 class TripSerializer(serializers.ModelSerializer):
@@ -38,7 +38,7 @@ class TripSerializer(serializers.ModelSerializer):
         location_name = validated_data.get("location_name")
 
         if location_name:
-            lat, lon = geocoding(location_name)
+            lat, lon = geocode(location_name)
 
             if lat is None or lon is None:
                 raise serializers.ValidationError({
@@ -54,7 +54,7 @@ class TripSerializer(serializers.ModelSerializer):
         new_location = validated_data.get("location_name")
 
         if new_location and new_location != instance.location_name:
-            lat, lon = geocoding(new_location)
+            lat, lon = geocode(new_location)
 
             if lat is None or lon is None:
                 raise serializers.ValidationError({
