@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {TripsService} from '../services/trips';
 import { Trip } from '../Trip.models';
@@ -12,30 +12,31 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './trips.css',
 })
 export class Trips implements OnInit {
-  trips: Trip[] = [];
-  loading = true;
-
-
-  searchText = '';
+  trips = signal<Trip[]>([]);
+  loading = signal(true);
+  searchText = signal('');
 
   constructor(private tripService: TripsService) {}
 
   ngOnInit() {
     this.tripService.getTrips().subscribe({
       next: (data: Trip[]) => {
-        this.trips = data;
-        this.loading = false;
+        this.trips.set(data);
+        this.loading.set(false);
       },
       error: () => {
-        this.loading = false;
+        this.loading.set(false);
+
       },
     });
   }
   get filteredTrips(): Trip[] {
-    const q = this.searchText.trim().toLowerCase();
-    if (!q) return this.trips;
+    const q = this.searchText().trim().toLowerCase();
+    const trips = this.trips();
 
-    return this.trips.filter(t =>
+    if (!q) return trips;
+
+    return trips.filter((t:Trip) =>
       (t.title ?? '').toLowerCase().includes(q)
     );
   }

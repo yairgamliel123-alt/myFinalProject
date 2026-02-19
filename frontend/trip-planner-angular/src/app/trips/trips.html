@@ -1,13 +1,16 @@
-<div *ngIf="loading">Loading...</div>
-<input class="search-wrapper"
+<div *ngIf="loading()">Loading...</div>
 
+<input
+  class="search-wrapper"
   type="text"
   placeholder="🔍 חפש טיול לפי שם..."
-  [(ngModel)]="searchText"
+  [value]="searchText()"
+  (input)="searchText.set($any($event.target).value)"
 />
-<div class="cardContiner" *ngIf="!loading">
+
+<div class="cardContiner" *ngIf="!loading()">
   <app-trip-card
-  *ngFor="let trip of filteredTrips"
-  [trip]="trip"
-></app-trip-card>
+    *ngFor="let trip of filteredTrips"
+    [trip]="trip"
+  ></app-trip-card>
 </div>

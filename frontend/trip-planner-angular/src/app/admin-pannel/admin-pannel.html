@@ -8,7 +8,7 @@
   <button class="admin-btn " (click)="toggleRemoveFrom()">
     {{ showRemoveForm ? 'סגור טופס' : 'הסר טיול' }}
   </button>
-  <button class="admin-btn ">עדכן טיול</button>
+  <button class="admin-btn " (click)="toggleUpdateFrom()">עדכן טיול</button>
 </div>
 
 <div class="admin-page" *ngIf="showAddForm">
@@ -67,3 +67,30 @@
     <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
   </form>
 </div>
+
+
+
+
+
+<div class="admin-page" *ngIf="showUpdateForm">
+  <form (ngSubmit)="update()" #f="ngForm" class="form">
+    <input type="text" name="tripName" [(ngModel)]="tripName" placeholder="הכנס שם טיול" required />
+    <input type="text" name="fieldToChange" [(ngModel)]="fieldToChange" placeholder="שדה שתרצה לשנות" required />
+    <textarea
+      class="input textarea"
+      name="newValue"
+      [(ngModel)]="newValue"
+      placeholder="הכנס ערך חדש"
+      rows="4"
+      required
+    ></textarea>
+    <button class="btn" [disabled]="!f.valid || loading">
+      {{ loading ? 'משנה שדה' : 'שנה שדה' }}
+    </button>
+    <p class="success" *ngIf="successMsg">{{ successMsg }}</p>
+    <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
+  </form>
+</div>
+
+
+

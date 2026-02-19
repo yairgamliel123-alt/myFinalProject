@@ -19,4 +19,15 @@ export class TripsService {
     const encodedName = encodeURIComponent(trip_name);
     return this.http.delete<Trip>(`${this.apiUrl}/remove-trip/${encodedName}/` );
   }
+  // update-trip/<str:trip_name>/<str:field_to_change>/
+  updateTrip(trip_name: string, field_to_change: string, value: any) {
+    const encodedName = encodeURIComponent(trip_name);
+    const encodedField = encodeURIComponent(field_to_change);
+  
+    return this.http.put<Trip>(
+      `${this.apiUrl}/update-trip/${encodedName}/${encodedField}/`,
+      { value } 
+    );
+  }
+  
 }

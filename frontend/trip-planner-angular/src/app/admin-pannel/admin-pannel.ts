@@ -25,7 +25,10 @@ export class AdminPannel {
   errorMsg = '';
   showAddForm = false;
   showRemoveForm = false;
+  showUpdateForm = false;
   tripName: string = '';
+  fieldToChange :string=''
+  newValue:any
 
   constructor(private tripService: TripsService) {}
   toggleAddTrip() {
@@ -33,6 +36,9 @@ export class AdminPannel {
   }
   toggleRemoveFrom() {
     this.showRemoveForm = !this.showRemoveForm;
+  }
+  toggleUpdateFrom() {
+    this.showUpdateForm = !this.showUpdateForm;
   }
   submit() {
     this.loading = true;
@@ -85,4 +91,54 @@ export class AdminPannel {
       }
     });
   }
+
+  update() {
+    // בדיקות בסיסיות
+    if (!this.tripName?.trim()) {
+      this.errorMsg = 'יש להזין שם טיול';
+      return;
+    }
+  
+    if (!this.fieldToChange?.trim()) {
+      this.errorMsg = 'יש לבחור שדה לעדכון';
+      return;
+    }
+  
+    if (this.newValue === null || this.newValue === undefined || String(this.newValue).trim() === '') {
+      this.errorMsg = 'יש להזין ערך חדש';
+      return;
+    }
+  
+    // אישור לפני עדכון
+    const ok = confirm(`לעדכן את "${this.fieldToChange}" בטיול "${this.tripName}"?`);
+    if (!ok) return;
+  
+    // UI state
+    this.loading = true;
+    this.errorMsg = '';
+    this.successMsg = '';
+  
+    this.tripService
+      .updateTrip(this.tripName, this.fieldToChange, this.newValue)
+      .subscribe({
+        next: () => {
+          this.successMsg = 'עודכן בהצלחה ✅';
+          this.loading = false;
+  
+          // אופציונלי: לנקות שדות
+          this.tripName = '';
+          this.fieldToChange = '';
+          this.newValue = '';
+        },
+        error: (err: any) => {
+          this.loading = false;
+          this.errorMsg =
+            err?.error?.error || err?.error?.message || 'שגיאה בעדכון ❌';
+          console.error(err);
+        },
+      });
+  }
+  
+
+
 }
