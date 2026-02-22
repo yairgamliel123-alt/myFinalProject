@@ -25,6 +25,16 @@ def show_all_trips(request):
     trip = Trip.objects.values().all()
     return Response(trip)
 
+@api_view(["GET"])
+def get_trip_by_id(request, id):
+    try:
+        trip = Trip.objects.values().get(id=id)
+        return Response(trip)
+    except Trip.DoesNotExist:
+        return Response(
+            {"error": "Trip not found"},
+            status=status.HTTP_404_NOT_FOUND
+        )
 
 @api_view(["DELETE"])
 def delete_trip(request, trip_name):

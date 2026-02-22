@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" [routerLink]="['/trips', trip.id]" role="button" tabindex="0">
     <img
       [src]="trip.image"
       alt="{{ trip.title }}"

@@ -8,5 +8,7 @@ urlpatterns = [
     "update-trip/<str:trip_name>/<str:field_to_change>/",
     views.update_trip_field,
     name="update-trip-field"
-)
+),
+
+    path("trips/<int:id>/", views.get_trip_by_id)
 ]

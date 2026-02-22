@@ -8,6 +8,10 @@
   max-width: 200px;
   
 }
+.card:focus {
+  outline: 2px solid #000;
+  outline-offset: 4px;
+}
 
 .card:hover {
   transform: translateY(-6px);
