@@ -1,10 +1,112 @@
+<!-- Loading / Error -->
+<div *ngIf="loading()" class="state">טוען טיול...</div>
+<div *ngIf="error()" class="state error">שגיאה בטעינת הטיול</div>
 
-<div *ngIf="trip as t">
-    <!-- <img
-  *ngIf="trip?.image"
-  [src]="trip.image"
-  class="bg-img"
-/> -->
-    <p>{{ t.description }}</p>
-  </div>
 
+<div [style.backgroundImage]="'url(' + t.image + ')'" class="trip-page"  *ngIf="trip() as t"  >
+  
+  
+  <section class="hero" >
+    <div class="overlay">
+      <div class="hero-content">
+        <h1>{{ t.title }}</h1>
+        <p class="location" *ngIf="t.location_name">📍 {{ t.location_name }}</p>
+
+        <div class="actions">
+          <a
+            class="btn"
+            *ngIf="t.youtube_id"
+            [href]="'https://www.youtube.com/watch?v=' + t.youtube_id"
+            target="_blank"
+          >
+            🎥 צפה ביוטיוב
+          </a>
+            
+
+          <a
+            class="btn outline"
+            *ngIf="t.latitude && t.longitude"
+            [href]="'https://www.google.com/maps?q=' + t.latitude + ',' + t.longitude"
+            target="_blank"
+          >
+            🗺️ פתח במפה
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENT -->
+  <main class="container">
+    <!-- ABOUT -->
+    <section class="card">
+      <h2>על הטיול</h2>
+      <p *ngIf="t.description; else noDesc">{{ t.description }}</p>
+      <ng-template #noDesc>
+        <p class="muted">אין תיאור לטיול הזה עדיין.</p>
+      </ng-template>
+    </section>
+
+    <section class="grid">
+      <!-- VIDEO -->
+      <div class="card">
+        <h2>סרטון</h2>
+
+        <div *ngIf="t.youtube_id; else noVideo">
+          <p class="muted">לצפייה בסרטון:</p>
+          <a
+            class="btn"
+            [href]="'https://www.youtube.com/watch?v=' + t.youtube_id"
+            target="_blank"
+          >
+            פתח סרטון
+
+          </a>
+        </div>
+
+        <ng-template #noVideo>
+          <p class="muted">אין סרטון לטיול הזה עדיין.</p>
+        </ng-template>
+      </div>
+
+      <!-- WEATHER -->
+      <div class="card">
+        <h2>מזג אוויר</h2>
+
+        <div class="wx-mini state" *ngIf="loadingWeather()">טוען מזג אוויר...</div>
+        <div class="wx-mini state error" *ngIf="weatherError()">שגיאה בטעינת מזג אוויר</div>
+
+        <div class="wx-mini" *ngIf="weather() as w">
+          <div class="wx-mini-top">
+            <div class="wx-mini-left">
+              <div class="wx-mini-icon">🌤️</div>
+
+              <div class="wx-mini-temp">
+                <span class="num">{{ w.current.temperature_2m | number:'1.0-0' }}</span>
+                <span class="unit">°C</span>
+              </div>
+
+              <div class="wx-mini-meta">
+                <div>Precipitation: {{ w.current.precipitation_probability }}%</div>
+                <div>Humidity: {{ w.current.relative_humidity_2m }}%</div>
+                <div>Wind: {{ w.current.wind_speed_10m | number:'1.0-0' }} km/h</div>
+              </div>
+            </div>
+
+            <div class="wx-mini-right">
+              <div class="title">Weather</div>
+              <div class="time">{{ w.current.time | date:'EEEE HH:mm' }}</div>
+              <div class="desc">Partly sunny</div>
+            </div>
+          </div>
+        </div>
+
+        <p class="muted" *ngIf="!loadingWeather() && !weatherError() && !weather()">
+          אין נתוני מזג אוויר לטיול הזה.
+        </p>
+      </div>
+    </section>
+
+    <a class="back" routerLink="/trips">⬅ חזרה לכל הטיולים</a>
+  </main>
+</div>

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-qde893ky(f$*&ourei!o0-li-+e226b5c@s(3ai1-1u9kixelq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
 ]
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'TripPlanner',
      "corsheaders",
+     'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -120,3 +121,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}

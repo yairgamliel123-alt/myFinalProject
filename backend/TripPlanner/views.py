@@ -6,7 +6,13 @@ from rest_framework import status
 from .serializers import TripSerializer
 from .models import Trip
 from django.shortcuts import get_object_or_404
-
+from django.contrib.auth.models import User
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
+from .serializers import MeSerializer
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 
@@ -67,3 +73,63 @@ def update_trip_field(request, trip_name, field_to_change):
         {"message": "Trip updated successfully"},
         status=status.HTTP_200_OK
     )
+
+
+
+# ////////////////////////////// userInfo
+class RegisterView(APIView):
+    permission_classes = [AllowAny]  # מאפשר להירשם גם בלי להיות מחובר
+
+    def post(self, request):
+        # 1) קוראים נתונים מה-JSON שנשלח
+        username = request.data.get("username")
+        email = request.data.get("email", "")
+        password = request.data.get("password")
+
+        # 2) בדיקות בסיסיות
+        if not username or not password:
+            return Response(
+                {"error": "username and password required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # 3) בדיקה אם שם משתמש כבר קיים
+        if User.objects.filter(username=username).exists():
+            return Response(
+                {"error": "username already exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # 4) יצירת משתמש (חשוב: create_user מצפין סיסמה)
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
+
+        # 5) תשובה
+        return Response(
+            {"message": "registered successfully", "user_id": user.id},
+            status=status.HTTP_201_CREATED
+        )
+
+class MeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response(MeSerializer(request.user).data)
+    
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def toggle_favorite(request):
+    trip_id = request.data.get("trip_id")
+    trip = Trip.objects.get(id=trip_id)
+
+    profile = request.user.profile
+
+    if profile.favorites.filter(id=trip_id).exists():
+        profile.favorites.remove(trip)
+        return Response({"status": "removed"})
+    else:
+        profile.favorites.add(trip)
+        return Response({"status": "added"})

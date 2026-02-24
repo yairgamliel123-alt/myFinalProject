@@ -17,8 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include, path
-
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from TripPlanner.views import RegisterView
+from TripPlanner.views import MeView
+from TripPlanner.views import toggle_favorite
 urlpatterns = [
      path('admin/', admin.site.urls),
      path("api/", include("TripPlanner.urls")),
+     path("api/", include("TripPlanner.urls")),
+    #  ////////////////////////userInfo
+     path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+     path('api/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+     path('api/register/', RegisterView.as_view(), name='register'),
+     path("api/me/", MeView.as_view(), name="me"),
+     path("api/favorites/toggle/",toggle_favorite),
 ]

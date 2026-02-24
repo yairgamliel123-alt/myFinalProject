@@ -29,10 +29,20 @@ export class TripsService {
       { value } 
     );
   }
-
-
   getTripById(id: number) {
     return this.http.get<Trip>(`${this.apiUrl}/trips/${id}/`);
   }
+
+  getWeather(lat: number, lon: number) {
+    const url =
+      `https://api.open-meteo.com/v1/forecast` +
+      `?latitude=${lat}&longitude=${lon}` +
+      `&current=temperature_2m,relative_humidity_2m,precipitation_probability,wind_speed_10m` +
+      `&timezone=auto`;
+  
+    return this.http.get<any>(url);
+  }
+
+  
   
 }

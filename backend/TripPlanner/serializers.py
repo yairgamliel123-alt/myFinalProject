@@ -4,6 +4,7 @@ from django.core.validators import URLValidator
 from .extract_youtube_url import extract_youtube_id
 from django.core.exceptions import ValidationError as DjangoValidationError
 from .service.geocoding import geocode
+from django.contrib.auth.models import User
 
 
 class TripSerializer(serializers.ModelSerializer):
@@ -65,3 +66,16 @@ class TripSerializer(serializers.ModelSerializer):
             instance.longitude = lon
 
         return super().update(instance, validated_data)
+    
+
+# /////////////////////////userSerializer    
+class MeSerializer(serializers.ModelSerializer):
+    is_admin = serializers.BooleanField(source="is_staff")
+    favorites = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ["id", "username", "email", "is_admin", "favorites"]
+
+    def get_favorites(self, obj):
+        return list(obj.profile.favorites.values_list("id", flat=True))
