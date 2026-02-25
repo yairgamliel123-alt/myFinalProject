@@ -1,18 +1,20 @@
 <div class="card" [routerLink]="['/trips', trip.id]" role="button" tabindex="0">
-    <img
-      [src]="trip.image"
-      alt="{{ trip.title }}"
-      class="card-img"
-    />
-  
-    <div class="card-body">
-      <h3>{{ trip.title }}</h3>
-  
-      <p class="location" *ngIf="trip.location_name">
-        📍 {{ trip.location_name }}
-      </p>
-        <p>❤️</p>
-      
-    </div>
+  <img [src]="trip.image" alt="{{ trip.title }}" class="card-img" />
+
+  <div class="card-body">
+    <h3>{{ trip.title }}</h3>
+
+    <p class="location" *ngIf="trip.location_name">
+      📍 {{ trip.location_name }}
+    </p>
+
+    <ng-container *ngIf="me$ | async as me">
+      <button
+        type="button"
+        (click)="toggle(trip.id); $event.stopPropagation(); $event.preventDefault();"
+      >
+        {{ isFav(trip.id, me) ? '❤️' : '🤍' }}
+      </button>
+    </ng-container>
   </div>
-  
+</div>

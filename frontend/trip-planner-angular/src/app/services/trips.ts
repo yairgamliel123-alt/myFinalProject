@@ -43,6 +43,13 @@ export class TripsService {
     return this.http.get<any>(url);
   }
 
+  toggleFavorite(tripId: number): Observable<{ status: 'added' | 'removed' }> {
+    return this.http.post<{ status: 'added' | 'removed' }>(
+      `${this.apiUrl}/favorites/toggle/`,
+      { trip_id: tripId }
+    );
+  }
+
   
   
 }

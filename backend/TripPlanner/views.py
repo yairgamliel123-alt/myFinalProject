@@ -13,6 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import MeSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from .models import UserProfile
 # Create your views here.
 
 
@@ -81,7 +82,7 @@ class RegisterView(APIView):
     permission_classes = [AllowAny]  # מאפשר להירשם גם בלי להיות מחובר
 
     def post(self, request):
-        # 1) קוראים נתונים מה-JSON שנשלח
+    # 1) קוראים נתונים מה-JSON שנשלח
         username = request.data.get("username")
         email = request.data.get("email", "")
         password = request.data.get("password")
@@ -100,18 +101,24 @@ class RegisterView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # 4) יצירת משתמש (חשוב: create_user מצפין סיסמה)
+        # 4) יצירת משתמש (מצפין סיסמה)
         user = User.objects.create_user(
             username=username,
             email=email,
             password=password
         )
 
+        # ✅ 4.1) יצירת פרופיל למשתמש
+        UserProfile.objects.create(user=user)
+
         # 5) תשובה
         return Response(
             {"message": "registered successfully", "user_id": user.id},
             status=status.HTTP_201_CREATED
         )
+        
+        
+
 
 class MeView(APIView):
     permission_classes = [IsAuthenticated]
