@@ -12,7 +12,6 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    // ❗ אם זה רץ ב-SSR (שרת) – לא לגעת ב-localStorage
     if (!isPlatformBrowser(this.platformId)) {
       return next.handle(req);
     }

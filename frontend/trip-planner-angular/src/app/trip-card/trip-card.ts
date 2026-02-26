@@ -31,7 +31,7 @@ export class TripCard implements OnInit {
 
   toggle(tripId: number) {
     this.trips.toggleFavorite(tripId).subscribe({
-      next: () => this.auth.getMe().subscribe(), // מרענן favorites
+      next: () => this.auth.getMe().subscribe(), 
     });
   }
 }

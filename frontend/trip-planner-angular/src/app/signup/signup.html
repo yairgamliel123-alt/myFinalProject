@@ -1,1 +1,31 @@
-<p>signup works!</p>
+<h2>Sign up</h2>
+
+<form (ngSubmit)="doSignup()">
+  <input
+    type="text"
+    name="username"
+    [(ngModel)]="username"
+    placeholder="Username"
+    required
+  />
+
+  <input
+    type="email"
+    name="email"
+    [(ngModel)]="email"
+    placeholder="Email"
+  />
+
+  <input
+    type="password"
+    name="password"
+    [(ngModel)]="password"
+    placeholder="Password"
+    required
+    minlength="6"
+  />
+
+  <button type="submit">Create account</button>
+</form>
+
+<p *ngIf="error" style="color:red">{{ error }}</p>

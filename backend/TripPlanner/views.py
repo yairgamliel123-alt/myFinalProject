@@ -14,8 +14,18 @@ from .serializers import MeSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .models import UserProfile
-# Create your views here.
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.tokens import RefreshToken
+from .serializers import RegisterSerializer
+from rest_framework.permissions import IsAdminUser
 
+# Create your views here.
+class AdminPanelView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        return Response({"message": "Admin panel data"})
 
 @api_view(["Post"])
 def add_trip(request):
@@ -28,10 +38,11 @@ def add_trip(request):
 
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def show_all_trips(request):
     trip = Trip.objects.values().all()
     return Response(trip)
-
+    
 @api_view(["GET"])
 def get_trip_by_id(request, id):
     try:
@@ -79,42 +90,25 @@ def update_trip_field(request, trip_name, field_to_change):
 
 # ////////////////////////////// userInfo
 class RegisterView(APIView):
-    permission_classes = [AllowAny]  # מאפשר להירשם גם בלי להיות מחובר
+    permission_classes = [AllowAny]
 
     def post(self, request):
-    # 1) קוראים נתונים מה-JSON שנשלח
-        username = request.data.get("username")
-        email = request.data.get("email", "")
-        password = request.data.get("password")
+        serializer = RegisterSerializer(data=request.data)
 
-        # 2) בדיקות בסיסיות
-        if not username or not password:
-            return Response(
-                {"error": "username and password required"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        # 3) בדיקה אם שם משתמש כבר קיים
-        if User.objects.filter(username=username).exists():
-            return Response(
-                {"error": "username already exists"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        # 4) יצירת משתמש (מצפין סיסמה)
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password
-        )
-
-        # ✅ 4.1) יצירת פרופיל למשתמש
+        user = serializer.save()
         UserProfile.objects.create(user=user)
 
-        # 5) תשובה
+        refresh = RefreshToken.for_user(user)
+
         return Response(
-            {"message": "registered successfully", "user_id": user.id},
-            status=status.HTTP_201_CREATED
+            {
+                "access": str(refresh.access_token),
+                "refresh": str(refresh),
+            },
+            status=status.HTTP_201_CREATED,
         )
         
         
