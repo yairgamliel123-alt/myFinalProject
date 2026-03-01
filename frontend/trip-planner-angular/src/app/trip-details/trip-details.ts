@@ -13,7 +13,6 @@ import { Trip } from '../Trip.models';
   styleUrls: ['./trip-details.css'],
 })
 export class TripDetails implements OnInit {
-  // ✅ הכל signals
   trip = signal<Trip | null>(null);
 
   loading = signal(true);

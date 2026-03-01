@@ -27,7 +27,7 @@ class AdminPanelView(APIView):
     def get(self, request):
         return Response({"message": "Admin panel data"})
 
-@api_view(["Post"])
+@api_view(["POST"])
 def add_trip(request):
     serializer = TripSerializer(data=request.data)
     if serializer.is_valid():
