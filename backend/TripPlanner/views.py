@@ -28,6 +28,7 @@ class AdminPanelView(APIView):
         return Response({"message": "Admin panel data"})
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated, IsAdminUser])
 def add_trip(request):
     serializer = TripSerializer(data=request.data)
     if serializer.is_valid():
@@ -55,6 +56,7 @@ def get_trip_by_id(request, id):
         )
 
 @api_view(["DELETE"])
+@permission_classes([IsAuthenticated, IsAdminUser])
 def delete_trip(request, trip_name):
     trip = get_object_or_404(Trip, title=trip_name)
     trip.delete()
@@ -62,6 +64,7 @@ def delete_trip(request, trip_name):
 
 
 @api_view(["PUT"])
+@permission_classes([IsAuthenticated, IsAdminUser])
 def update_trip_field(request, trip_name, field_to_change):
     trip = get_object_or_404(Trip, title=trip_name)
 

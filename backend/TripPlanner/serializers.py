@@ -66,9 +66,9 @@ class TripSerializer(serializers.ModelSerializer):
             instance.longitude = lon
 
         return super().update(instance, validated_data)
-    
 
-# /////////////////////////userSerializer    
+
+# /////////////////////////userSerializer
 class MeSerializer(serializers.ModelSerializer):
     is_admin = serializers.BooleanField(source="is_staff")
     favorites = serializers.SerializerMethodField()
@@ -79,7 +79,8 @@ class MeSerializer(serializers.ModelSerializer):
 
     def get_favorites(self, obj):
         return list(obj.profile.favorites.values_list("id", flat=True))
-    
+
+
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
     password = serializers.CharField(min_length=4, write_only=True)
@@ -104,4 +105,4 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=validated_data["email"],
             password=validated_data["password"],
         )
-        return user    
+        return user
