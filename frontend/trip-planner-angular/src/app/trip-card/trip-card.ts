@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
-
 import { Trip } from '../Trip.models';
 import { AuthService, MeResponse } from '../services/auth.service';
 import { TripsService } from '../services/trips';
