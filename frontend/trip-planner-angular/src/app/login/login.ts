@@ -1,31 +1,60 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService,MeResponse } from '../services/auth.service';
-
-
-
+import { Router } from '@angular/router';
+import { AuthService, MeResponse } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
-  username = '';
-  password = '';
-  me: any = null;
 
-  constructor(private auth: AuthService) {}
+  username = signal('');
+  password = signal('');
+
+  error = signal('');
+  loading = signal(false);
+
+  constructor(
+    private auth: AuthService,
+    private router: Router
+  ) {}
 
   doLogin() {
-    this.auth.login(this.username, this.password).subscribe({
+
+    this.error.set('');
+    this.loading.set(true);
+
+    this.auth.login(this.username(), this.password()).subscribe({
+
       next: () => {
-        this.auth.getMe().subscribe((me:MeResponse) => this.me = me);
+        this.auth.getMe().subscribe({
+          next: (me: MeResponse) => {
+            this.loading.set(false);
+            this.router.navigateByUrl('/trips');
+          }
+        });
       },
-      error: (err:any) => console.log(err)
+
+      error: (err:any) => {
+
+        this.loading.set(false);
+      
+        const e = err?.error;
+      
+        const message =
+          e?.detail ||
+          e?.username?.[0] ||
+          e?.password?.[0] ||
+          'Login failed';
+      
+        this.error.set(message);
+      }
+
     });
   }
 }

@@ -1,4 +1,3 @@
-<!-- Loading / Error -->
 <div *ngIf="loading()" class="state">טוען טיול...</div>
 <div *ngIf="error()" class="state error">שגיאה בטעינת הטיול</div>
 
@@ -36,9 +35,7 @@
     </div>
   </section>
 
-  <!-- CONTENT -->
   <main class="container">
-    <!-- ABOUT -->
     <section class="card">
       <h2>על הטיול</h2>
       <p *ngIf="t.description; else noDesc">{{ t.description }}</p>
@@ -48,7 +45,6 @@
     </section>
 
     <section class="grid">
-      <!-- VIDEO -->
       <div class="card">
         <h2>סרטון</h2>
 
@@ -67,9 +63,10 @@
         <ng-template #noVideo>
           <p class="muted">אין סרטון לטיול הזה עדיין.</p>
         </ng-template>
+        <a class="back" routerLink="/trips">⬅ חזרה לכל הטיולים</a>
+
       </div>
 
-      <!-- WEATHER -->
       <div class="card">
         <h2>מזג אוויר</h2>
 
@@ -107,6 +104,5 @@
       </div>
     </section>
 
-    <a class="back" routerLink="/trips">⬅ חזרה לכל הטיולים</a>
   </main>
 </div>

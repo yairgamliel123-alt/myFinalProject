@@ -1,31 +1,43 @@
-<h2>Sign up</h2>
+<div class="signup-container">
 
-<form (ngSubmit)="doSignup()">
-  <input
-    type="text"
-    name="username"
-    [(ngModel)]="username"
-    placeholder="Username"
-    required
-  />
+  <h2>Sign up</h2>
 
-  <input
-    type="email"
-    name="email"
-    [(ngModel)]="email"
-    placeholder="Email"
-  />
+  <form (ngSubmit)="doSignup()">
 
-  <input
-    type="password"
-    name="password"
-    [(ngModel)]="password"
-    placeholder="Password"
-    required
-    minlength="6"
-  />
+    <input
+      type="text"
+      name="username"
+      placeholder="Username"
+      required
+      [ngModel]="username()"
+      (ngModelChange)="username.set($event)"
+    />
 
-  <button type="submit">Create account</button>
-</form>
+    <input
+      type="email"
+      name="email"
+      placeholder="Email"
+      [ngModel]="email()"
+      (ngModelChange)="email.set($event)"
+    />
 
-<p *ngIf="error" style="color:red">{{ error }}</p>
+    <input
+      type="password"
+      name="password"
+      placeholder="Password"
+      required
+      minlength="6"
+      [ngModel]="password()"
+      (ngModelChange)="password.set($event)"
+    />
+
+    <button type="submit" [disabled]="loading()">
+      {{ loading() ? 'Creating...' : 'Create account' }}
+    </button>
+
+  </form>
+
+  <p *ngIf="success()" class="success">{{ success() }}</p>
+  <p *ngIf="error()" class="error">{{ error() }}</p>
+
+</div>

@@ -1,22 +1,27 @@
 <div class="login-container">
-    <h2>Login</h2>
-  
-    <input
-      type="text"
-      placeholder="Username"
-      [(ngModel)]="username"
-    />
-  
-    <input
-      type="password"
-      placeholder="Password"
-      [(ngModel)]="password"
-    />
-  
-    <button (click)="doLogin()">
-      Login
-    </button>
-  
-  
-  </div>
-  
+
+  <h2>Login</h2>
+
+  <input
+    type="text"
+    placeholder="Username"
+    [ngModel]="username()"
+    (ngModelChange)="username.set($event)"
+  />
+
+  <input
+    type="password"
+    placeholder="Password"
+    [ngModel]="password()"
+    (ngModelChange)="password.set($event)"
+  />
+
+  <button (click)="doLogin()" [disabled]="loading()">
+    {{ loading() ? 'Logging in...' : 'Login' }}
+  </button>
+
+  <p *ngIf="error()" class="error">
+    {{ error() }}
+  </p>
+
+</div>
