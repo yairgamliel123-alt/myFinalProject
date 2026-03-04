@@ -1,5 +1,7 @@
 <div *ngIf="loading()">Loading...</div>
-<button *ngIf="me$ | async as me"
+<button 
+        class="favorites-btn"
+        *ngIf="me$ | async as me"
         type="button"
         (click)="showOnlyFavorites.set(!showOnlyFavorites())"
 
