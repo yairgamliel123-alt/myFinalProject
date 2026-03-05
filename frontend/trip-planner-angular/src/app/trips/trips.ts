@@ -20,6 +20,9 @@ export class Trips implements OnInit {
   me$!: Observable<MeResponse | null>;
   me = signal<MeResponse | null>(null);
   showOnlyFavorites = signal(false);
+  showFeedbackBox = signal(false);
+  feedbackMessage = signal('');
+  sending = signal(false);
 
   constructor(private tripService: TripsService,private auth: AuthService) {}
 
@@ -51,6 +54,32 @@ export class Trips implements OnInit {
     }
 
     return trips;
+  }
+
+  toggleFeedback() {
+    this.showFeedbackBox.set(!this.showFeedbackBox());
+  }
+
+  sendFeedback() {
+
+    if (!this.feedbackMessage().trim()) return;
+  
+    this.sending.set(true);
+  
+    this.tripService.sendFeedback(this.feedbackMessage()).subscribe({
+      next: () => {
+        alert("ההודעה נשלחה לאדמין");
+  
+        this.feedbackMessage.set('');
+        this.showFeedbackBox.set(false);
+        this.sending.set(false);
+      },
+      error: (err:any) => {
+        console.error(err);
+        this.sending.set(false);
+      }
+    });
+  
   }
 
 

@@ -2,20 +2,29 @@
 
 <div class="admin-buttons">
   <button class="admin-btn" (click)="toggleAddTrip()">
-    {{ showAddForm ? 'סגור טופס' : 'הוסף טיול' }}
+    {{ showAddForm() ? 'סגור טופס' : 'הוסף טיול' }}
   </button>
 
-  <button class="admin-btn " (click)="toggleRemoveFrom()">
-    {{ showRemoveForm ? 'סגור טופס' : 'הסר טיול' }}
+  <button class="admin-btn" (click)="toggleRemoveFrom()">
+    {{ showRemoveForm() ? 'סגור טופס' : 'הסר טיול' }}
   </button>
-  <button class="admin-btn " (click)="toggleUpdateFrom()">עדכן טיול</button>
+
+  <button class="admin-btn" (click)="toggleUpdateFrom()">
+    עדכן טיול
+  </button>
 </div>
 
-<div class="admin-page" *ngIf="showAddForm">
+<div class="admin-page" *ngIf="showAddForm()">
   <h2>הוספת טיול חדש</h2>
 
   <form (ngSubmit)="submit()" #f="ngForm" class="form">
-    <input class="input" name="title" [(ngModel)]="model.title" placeholder="שם הטיול *" required />
+    <input
+      class="input"
+      name="title"
+      [(ngModel)]="model.title"
+      placeholder="שם הטיול *"
+      required
+    />
 
     <input
       class="input"
@@ -47,50 +56,87 @@
       placeholder="YouTube ID"
     />
 
-    <button class="btn" [disabled]="!f.valid || loading">
-      {{ loading ? 'שומר...' : 'הוסף טיול' }}
+    <button class="btn" [disabled]="!f.valid || loading()">
+      {{ loading() ? 'שומר...' : 'הוסף טיול' }}
     </button>
 
-    <p class="success" *ngIf="successMsg">{{ successMsg }}</p>
-    <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
+    <p class="success" *ngIf="successMsg()">{{ successMsg() }}</p>
+    <p class="error" *ngIf="errorMsg()">{{ errorMsg() }}</p>
   </form>
 </div>
 
-<div class="admin-page" *ngIf="showRemoveForm">
+<div class="admin-page" *ngIf="showRemoveForm()">
   <form (ngSubmit)="remove()" #f="ngForm" class="form">
-    <input type="text" name="tripName" [(ngModel)]="tripName" placeholder="הכנס שם טיול" required />
+    <input
+      type="text"
+      name="tripName"
+      [ngModel]="tripName()"
+      (ngModelChange)="tripName.set($event)"
+      placeholder="הכנס שם טיול"
+      required
+    />
 
-    <button class="btn" [disabled]="!f.valid || loading">
-      {{ loading ? 'מוחק טיול' : 'מחק טיול' }}
+    <button class="btn" [disabled]="!f.valid || loading()">
+      {{ loading() ? 'מוחק טיול' : 'מחק טיול' }}
     </button>
-    <p class="success" *ngIf="successMsg">{{ successMsg }}</p>
-    <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
+
+    <p class="success" *ngIf="successMsg()">{{ successMsg() }}</p>
+    <p class="error" *ngIf="errorMsg()">{{ errorMsg() }}</p>
   </form>
 </div>
 
-
-
-
-
-<div class="admin-page" *ngIf="showUpdateForm">
+<div class="admin-page" *ngIf="showUpdateForm()">
   <form (ngSubmit)="update()" #f="ngForm" class="form">
-    <input type="text" name="tripName" [(ngModel)]="tripName" placeholder="הכנס שם טיול" required />
-    <input type="text" name="fieldToChange" [(ngModel)]="fieldToChange" placeholder="שדה שתרצה לשנות" required />
+    <input
+      type="text"
+      name="tripName"
+      [ngModel]="tripName()"
+      (ngModelChange)="tripName.set($event)"
+      placeholder="הכנס שם טיול"
+      required
+    />
+
+    <input
+      type="text"
+      name="fieldToChange"
+      [ngModel]="fieldToChange()"
+      (ngModelChange)="fieldToChange.set($event)"
+      placeholder="שדה שתרצה לשנות"
+      required
+    />
+
     <textarea
       class="input textarea"
       name="newValue"
-      [(ngModel)]="newValue"
+      [ngModel]="newValue()"
+      (ngModelChange)="newValue.set($event)"
       placeholder="הכנס ערך חדש"
       rows="4"
       required
     ></textarea>
-    <button class="btn" [disabled]="!f.valid || loading">
-      {{ loading ? 'משנה שדה' : 'שנה שדה' }}
+
+    <button class="btn" [disabled]="!f.valid || loading()">
+      {{ loading() ? 'משנה שדה' : 'שנה שדה' }}
     </button>
-    <p class="success" *ngIf="successMsg">{{ successMsg }}</p>
-    <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
+
+    <p class="success" *ngIf="successMsg()">{{ successMsg() }}</p>
+    <p class="error" *ngIf="errorMsg()">{{ errorMsg() }}</p>
   </form>
 </div>
 
+<button (click)="showFeedback()">
+  הצג הודעות משתמשים 💬
+</button>
 
+<div *ngIf="showMessages()">
+  <div *ngIf="messagesLoading()">
+    טוען הודעות...
+  </div>
 
+  <ul *ngIf="!messagesLoading()">
+    <li *ngFor="let m of messages()">
+      <b>{{ m.email }}</b>
+      <p>{{ m.message }}</p>
+    </li>
+  </ul>
+</div>

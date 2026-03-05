@@ -3,11 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { Trips } from '../trips/trips';
 import { Trip } from '../Trip.models';
 import { Observable } from 'rxjs';
+export interface FeedbackMsg {
+  id: number;
+  message: string;
+  created_at: string;
+
+}
 @Injectable({
   providedIn: 'root',
 })
 export class TripsService {
   private apiUrl = 'http://localhost:8000/api';
+
   constructor(private http: HttpClient) {}
   getTrips() {
     return this.http.get<Trip[]>(`${this.apiUrl}/all-trips/`);
@@ -50,6 +57,11 @@ export class TripsService {
     );
   }
 
-  
+  sendFeedback(message: string) {
+    return this.http.post(`${this.apiUrl}/feedback/send/`, { message });
+  }
+  getAllFeedback(): Observable<FeedbackMsg[]> {
+    return this.http.get<FeedbackMsg[]>(`${this.apiUrl}/admin-feedback/`);
+  }
   
 }

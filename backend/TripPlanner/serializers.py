@@ -5,7 +5,7 @@ from .extract_youtube_url import extract_youtube_id
 from django.core.exceptions import ValidationError as DjangoValidationError
 from .service.geocoding import geocode
 from django.contrib.auth.models import User
-
+from .models import Feedback
 
 class TripSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,7 +14,6 @@ class TripSerializer(serializers.ModelSerializer):
         read_only_fields = ("latitude", "longitude")
 
     def validate(self, attrs):
-        # --- YouTube validation ---
         youtube_input = attrs.get("youtube_id")
         if youtube_input:
             url_validator = URLValidator()
@@ -106,3 +105,9 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data["password"],
         )
         return user
+class FeedbackSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(source="user.email", read_only=True)
+    class Meta:
+        model = Feedback
+        read_only_fields = ("user",)
+        fields = ["id", "message", "created_at", "email"]

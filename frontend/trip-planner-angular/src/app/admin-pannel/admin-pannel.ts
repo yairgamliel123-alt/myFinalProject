@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TripsService } from '../services/trips';
@@ -6,7 +6,7 @@ import { Trip } from '../Trip.models';
 
 @Component({
   selector: 'app-admin-pannel',
-  standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './admin-pannel.html',
   styleUrl: './admin-pannel.css',
@@ -20,39 +20,47 @@ export class AdminPannel {
     youtube_id: '',
   };
 
-  loading = false;
-  successMsg = '';
-  errorMsg = '';
-  showAddForm = false;
-  showRemoveForm = false;
-  showUpdateForm = false;
-  tripName: string = '';
-  fieldToChange :string=''
-  newValue:any
+  loading = signal(false);
+  successMsg = signal('');
+  errorMsg = signal('');
+  showAddForm = signal(false);
+  showRemoveForm = signal(false);
+  showUpdateForm = signal(false);
+
+  tripName = signal('');
+  fieldToChange = signal('');
+  newValue = signal<any>('');
+
+  messages = signal<any[]>([]);
+  showMessages = signal(false);
+  messagesLoading = signal(false);
 
   constructor(private tripService: TripsService) {}
+
   toggleAddTrip() {
-    this.showAddForm = !this.showAddForm;
+    this.showAddForm.set(!this.showAddForm());
   }
+
   toggleRemoveFrom() {
-    this.showRemoveForm = !this.showRemoveForm;
+    this.showRemoveForm.set(!this.showRemoveForm());
   }
+
   toggleUpdateFrom() {
-    this.showUpdateForm = !this.showUpdateForm;
+    this.showUpdateForm.set(!this.showUpdateForm());
   }
+
   submit() {
-    this.loading = true;
-    this.successMsg = '';
-    this.errorMsg = '';
-    
+    this.loading.set(true);
+    this.successMsg.set('');
+    this.errorMsg.set('');
+
     console.log('Trip data:', this.model);
 
     this.tripService.addTrip(this.model).subscribe({
       next: () => {
-        this.successMsg = '✅ הטיול נוסף בהצלחה';
-        this.loading = false;
+        this.successMsg.set('✅ הטיול נוסף בהצלחה');
+        this.loading.set(false);
 
-       
         this.model = {
           title: '',
           image: '',
@@ -61,84 +69,103 @@ export class AdminPannel {
           youtube_id: '',
         };
       },
-      error: (err:any) => {
+      error: (err: any) => {
         console.error(err);
-        this.errorMsg = '❌ שגיאה בהוספת טיול';
-        this.loading = false;
+        this.errorMsg.set('❌ שגיאה בהוספת טיול');
+        this.loading.set(false);
       },
     });
   }
 
-  remove(){
-    if (!this.tripName) {
-      this.errorMsg = 'יש להזין שם טיול למחיקה';
+  remove() {
+    if (!this.tripName().trim()) {
+      this.errorMsg.set('יש להזין שם טיול למחיקה');
       return;
     }
 
-    this.loading = true;
-    this.errorMsg = '';
-    this.successMsg = '';
+    this.loading.set(true);
+    this.errorMsg.set('');
+    this.successMsg.set('');
 
-    this.tripService.removeTrip(this.tripName).subscribe({
+    this.tripService.removeTrip(this.tripName()).subscribe({
       next: () => {
-        this.successMsg = 'הטיול נמחק בהצלחה';
-        this.tripName = '';
-        this.loading = false; 
+        this.successMsg.set('הטיול נמחק בהצלחה');
+        this.tripName.set('');
+        this.loading.set(false);
         console.log('Trip deleted successfully');
       },
-      error: (err:any) => {
+      error: (err: any) => {
         console.error(err);
-      }
+        this.errorMsg.set('שגיאה במחיקת טיול ❌');
+        this.loading.set(false);
+      },
     });
   }
 
   update() {
-    // בדיקות בסיסיות
-    if (!this.tripName?.trim()) {
-      this.errorMsg = 'יש להזין שם טיול';
+    if (!this.tripName().trim()) {
+      this.errorMsg.set('יש להזין שם טיול');
       return;
     }
-  
-    if (!this.fieldToChange?.trim()) {
-      this.errorMsg = 'יש לבחור שדה לעדכון';
+
+    if (!this.fieldToChange().trim()) {
+      this.errorMsg.set('יש לבחור שדה לעדכון');
       return;
     }
-  
-    if (this.newValue === null || this.newValue === undefined || String(this.newValue).trim() === '') {
-      this.errorMsg = 'יש להזין ערך חדש';
+
+    if (
+      this.newValue() === null ||
+      this.newValue() === undefined ||
+      String(this.newValue()).trim() === ''
+    ) {
+      this.errorMsg.set('יש להזין ערך חדש');
       return;
     }
-  
-    // אישור לפני עדכון
-    const ok = confirm(`לעדכן את "${this.fieldToChange}" בטיול "${this.tripName}"?`);
+
+    const ok = confirm(`לעדכן את "${this.fieldToChange()}" בטיול "${this.tripName()}"?`);
     if (!ok) return;
-  
-    // UI state
-    this.loading = true;
-    this.errorMsg = '';
-    this.successMsg = '';
-  
+
+    this.loading.set(true);
+    this.errorMsg.set('');
+    this.successMsg.set('');
+
     this.tripService
-      .updateTrip(this.tripName, this.fieldToChange, this.newValue)
+      .updateTrip(this.tripName(), this.fieldToChange(), this.newValue())
       .subscribe({
         next: () => {
-          this.successMsg = 'עודכן בהצלחה ✅';
-          this.loading = false;
-  
-          // אופציונלי: לנקות שדות
-          this.tripName = '';
-          this.fieldToChange = '';
-          this.newValue = '';
+          this.successMsg.set('עודכן בהצלחה ✅');
+          this.loading.set(false);
+
+          this.tripName.set('');
+          this.fieldToChange.set('');
+          this.newValue.set('');
         },
         error: (err: any) => {
-          this.loading = false;
-          this.errorMsg =
-            err?.error?.error || err?.error?.message || 'שגיאה בעדכון ❌';
+          this.loading.set(false);
+          this.errorMsg.set(
+            err?.error?.error || err?.error?.message || 'שגיאה בעדכון ❌'
+          );
           console.error(err);
         },
       });
   }
-  
 
+  showFeedback() {
+    this.showMessages.set(!this.showMessages());
 
+    if (!this.showMessages()) return;
+
+    this.messagesLoading.set(true);
+
+    this.tripService.getAllFeedback().subscribe({
+      next: (data: any[]) => {
+        this.messages.set(data);
+        this.messagesLoading.set(false);
+      },
+      error: (err: any) => {
+        console.error(err);
+        this.messagesLoading.set(false);
+      },
+    });
+  }
 }

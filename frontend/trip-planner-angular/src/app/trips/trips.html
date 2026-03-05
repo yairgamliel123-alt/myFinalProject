@@ -19,3 +19,26 @@
     [trip]="trip"
   ></app-trip-card>
 </div>
+
+
+<button
+  *ngIf="me$ | async"
+  class="feedback-floating-btn"
+  (click)="toggleFeedback()"
+>
+💬
+</button>
+
+<div *ngIf="showFeedbackBox()" class="feedback-popup">
+
+  <textarea
+    [value]="feedbackMessage()"
+    (input)="feedbackMessage.set($any($event.target).value)"
+    placeholder="כתוב הודעה לאדמין..."
+  ></textarea>
+
+  <button (click)="sendFeedback()" [disabled]="sending()">
+    שלח
+  </button>
+
+</div>
