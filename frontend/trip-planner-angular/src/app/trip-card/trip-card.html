@@ -8,7 +8,7 @@
       📍 {{ trip.location_name }}
     </p>
 
-    <ng-container *ngIf="me$ | async as me">
+    <ng-container class="favorite-button" *ngIf="me$ | async as me">
       <button
         type="button"
         (click)="toggle(trip.id); $event.stopPropagation(); $event.preventDefault();"
