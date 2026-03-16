@@ -1,12 +1,16 @@
-from rest_framework import serializers
-from .models import Trip
-from django.core.validators import URLValidator
-from .extract_youtube_url import extract_youtube_id
-from django.core.exceptions import ValidationError as DjangoValidationError
-from .service.geocoding import geocode
 from django.contrib.auth.models import User
-from .models import Feedback
+from django.core.exceptions import ValidationError as DjangoValidationError
+from django.core.validators import URLValidator
+from rest_framework import serializers
 
+from .extract_youtube_url import extract_youtube_id
+from .models import Feedback, Trip
+from .service.geocoding import geocode
+
+
+# =========================
+# Trip Serializers
+# =========================
 class TripSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trip
@@ -15,8 +19,10 @@ class TripSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         youtube_input = attrs.get("youtube_id")
+
         if youtube_input:
             url_validator = URLValidator()
+
             try:
                 url_validator(youtube_input)
             except DjangoValidationError:
@@ -41,9 +47,9 @@ class TripSerializer(serializers.ModelSerializer):
             lat, lon = geocode(location_name)
 
             if lat is None or lon is None:
-                raise serializers.ValidationError({
-                    "location_name": "המיקום לא נמצא, נא להזין שם מיקום תקין"
-                })
+                raise serializers.ValidationError(
+                    {"location_name": "המיקום לא נמצא, נא להזין שם מיקום תקין"}
+                )
 
             validated_data["latitude"] = lat
             validated_data["longitude"] = lon
@@ -57,9 +63,9 @@ class TripSerializer(serializers.ModelSerializer):
             lat, lon = geocode(new_location)
 
             if lat is None or lon is None:
-                raise serializers.ValidationError({
-                    "location_name": "המיקום לא נמצא, נא להזין שם מיקום תקין"
-                })
+                raise serializers.ValidationError(
+                    {"location_name": "המיקום לא נמצא, נא להזין שם מיקום תקין"}
+                )
 
             instance.latitude = lat
             instance.longitude = lon
@@ -67,7 +73,9 @@ class TripSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
 
-# /////////////////////////userSerializer
+# =========================
+# User Serializers
+# =========================
 class MeSerializer(serializers.ModelSerializer):
     is_admin = serializers.BooleanField(source="is_staff")
     favorites = serializers.SerializerMethodField()
@@ -77,7 +85,10 @@ class MeSerializer(serializers.ModelSerializer):
         fields = ["id", "username", "email", "is_admin", "favorites"]
 
     def get_favorites(self, obj):
-        return list(obj.profile.favorites.values_list("id", flat=True))
+        profile = getattr(obj, "profile", None)
+        if not profile:
+            return []
+        return list(profile.favorites.values_list("id", flat=True))
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -99,15 +110,20 @@ class RegisterSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        user = User.objects.create_user(
+        return User.objects.create_user(
             username=validated_data["username"],
             email=validated_data["email"],
             password=validated_data["password"],
         )
-        return user
+
+
+# =========================
+# Feedback Serializers
+# =========================
 class FeedbackSerializer(serializers.ModelSerializer):
     email = serializers.CharField(source="user.email", read_only=True)
+
     class Meta:
         model = Feedback
-        read_only_fields = ("user",)
         fields = ["id", "message", "created_at", "email"]
+        read_only_fields = ("user", "email", "created_at")
