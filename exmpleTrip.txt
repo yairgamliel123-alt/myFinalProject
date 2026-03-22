@@ -1,0 +1,7 @@
+{
+  "title": "עין חרדלית",
+  "description": "אזור הגליל המערבי. מסלול קווי, מוצל וקל, הולכים עד שנמאס. הולכים הלוך חזור באותה דרך. חלק יפהפה מנחל כזיב בגליל המערבי. מפוצץ באנשים, לבוא מוקדם :)",
+  "image": "https://lh3.googleusercontent.com/gps-cs-s/AHVAwertTjnIqnHKgVRrlO5FUkPqkBD93hErG6aVftnumqlEVO37qgXBxd5pMUoZD5kZ_tTZZS_3z7rab5TJ7COOq9Fk2aooLjwOaN9ejwnL0h2Wgo3zC0uxNviVM5bG7Gf7qWZqo5g=s1360-w1360-h1020-rw",
+  "location_name": "Ein Hardalit Israel",
+ "youtube": "https://www.youtube.com/watch?v=hatQI9OyQ7M"
+}

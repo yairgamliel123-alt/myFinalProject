@@ -46,13 +46,12 @@ class TripSerializer(serializers.ModelSerializer):
         if location_name:
             lat, lon = geocode(location_name)
 
-            if lat is None or lon is None:
-                raise serializers.ValidationError(
-                    {"location_name": "המיקום לא נמצא, נא להזין שם מיקום תקין"}
-                )
-
-            validated_data["latitude"] = lat
-            validated_data["longitude"] = lon
+            if lat is not None and lon is not None:
+                validated_data["latitude"] = lat
+                validated_data["longitude"] = lon
+            else:
+                validated_data["latitude"] = None
+                validated_data["longitude"] = None
 
         return super().create(validated_data)
 
@@ -62,13 +61,12 @@ class TripSerializer(serializers.ModelSerializer):
         if new_location and new_location != instance.location_name:
             lat, lon = geocode(new_location)
 
-            if lat is None or lon is None:
-                raise serializers.ValidationError(
-                    {"location_name": "המיקום לא נמצא, נא להזין שם מיקום תקין"}
-                )
-
-            instance.latitude = lat
-            instance.longitude = lon
+            if lat is not None and lon is not None:
+                validated_data["latitude"] = lat
+                validated_data["longitude"] = lon
+            else:
+                validated_data["latitude"] = None
+                validated_data["longitude"] = None
 
         return super().update(instance, validated_data)
 
